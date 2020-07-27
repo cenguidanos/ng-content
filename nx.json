@@ -1,0 +1,36 @@
+{
+  "npmScope": "workspace-test",
+  "affected": {
+    "defaultBase": "master"
+  },
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "tsconfig.base.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/workspace/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
+      }
+    }
+  },
+  "projects": {
+    "client-spa": {
+      "tags": []
+    },
+    "client-spa-e2e": {
+      "tags": [],
+      "implicitDependencies": ["client-spa"]
+    },
+    "ng-content": {
+      "tags": []
+    }
+  }
+}

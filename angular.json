@@ -1,0 +1,174 @@
+{
+  "version": 1,
+  "projects": {
+    "client-spa": {
+      "projectType": "application",
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "apps/client-spa",
+      "sourceRoot": "apps/client-spa/src",
+      "prefix": "workspace-test",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/client-spa",
+            "index": "apps/client-spa/src/index.html",
+            "main": "apps/client-spa/src/main.ts",
+            "polyfills": "apps/client-spa/src/polyfills.ts",
+            "tsConfig": "apps/client-spa/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/client-spa/src/favicon.ico",
+              "apps/client-spa/src/assets"
+            ],
+            "styles": ["apps/client-spa/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/client-spa/src/environments/environment.ts",
+                  "with": "apps/client-spa/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "client-spa:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "client-spa:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "client-spa:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/client-spa/tsconfig.app.json",
+              "apps/client-spa/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/client-spa/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/client-spa/jest.config.js",
+            "tsConfig": "apps/client-spa/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "apps/client-spa/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "client-spa-e2e": {
+      "root": "apps/client-spa-e2e",
+      "sourceRoot": "apps/client-spa-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/client-spa-e2e/cypress.json",
+            "tsConfig": "apps/client-spa-e2e/tsconfig.e2e.json",
+            "devServerTarget": "client-spa:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "client-spa:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/client-spa-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/client-spa-e2e/**/*"]
+          }
+        }
+      }
+    },
+    "ng-content": {
+      "projectType": "library",
+      "root": "libs/ng-content",
+      "sourceRoot": "libs/ng-content/src",
+      "prefix": "workspace-test",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/ng-content/tsconfig.lib.json",
+              "libs/ng-content/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/ng-content/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/ng-content/jest.config.js",
+            "tsConfig": "libs/ng-content/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/ng-content/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular",
+    "analytics": false
+  },
+  "schematics": {
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    }
+  },
+  "defaultProject": "client-spa"
+}
